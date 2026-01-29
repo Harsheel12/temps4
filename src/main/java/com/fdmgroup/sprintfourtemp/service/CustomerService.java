@@ -27,9 +27,9 @@ public class CustomerService {
 		Customer newCustomer = new Customer(
 				customer.getName(), 
 				customer.getStreetNumber(), 
+				customer.getCity(),
 				customer.getProvince(),
-				customer.getPostalCode(), 
-				customer.getCity()
+				customer.getPostalCode() 
 				);
 
 		customerRepo.save(newCustomer);

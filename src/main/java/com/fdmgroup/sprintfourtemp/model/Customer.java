@@ -15,7 +15,11 @@ public class Customer {
 	private String city;
 	private String province;
 	private String postalCode;
-
+	
+	public Customer() {
+		
+	}
+	
 	public Customer(String name, String streetNumber, String city, String province, String postalCode) {
 		this.name = name;
 		this.streetNumber = streetNumber;
