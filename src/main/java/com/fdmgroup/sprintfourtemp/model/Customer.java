@@ -24,7 +24,6 @@ public class Customer {
 		this.postalCode = postalCode;
 	}
 	
-	// Test commit
 	public long getCustomerId() {
 		return customerId;
 	}

@@ -24,7 +24,6 @@ public class CustomerService {
 	}
 
 	public void createCustomer(Customer customer) {
-
 		Customer newCustomer = new Customer(
 				customer.getName(), 
 				customer.getStreetNumber(), 
@@ -32,10 +31,6 @@ public class CustomerService {
 				customer.getPostalCode(), 
 				customer.getCity()
 				);
-
-		if (customer.getName().equals("")) {
-			throw new RuntimeException("Invalid username");
-		}
 
 		customerRepo.save(newCustomer);
 	}
