@@ -24,12 +24,8 @@ public class CustomerService {
 	@Autowired
     private PostalCodeLookupRepository postalCodeLookupRepository;
 	
-	public Customer createCustomer(Customer customer) {
-        return customerRepository.save(customer);
-    }
-	
-	public Customer createCustomerWithPostalCode(CreateCustomerRequest request) {
-        // Extract postal code prefix (first 3 characters, remove spaces)
+	public Customer createCustomer(CreateCustomerRequest request) {
+		// Extract postal code prefix (first 3 characters, remove spaces)
         String postalCode = request.getPostalCode().replace(" ", "").toUpperCase();
         String postalCodePrefix = postalCode.substring(0, 3);
         
@@ -47,7 +43,7 @@ public class CustomerService {
         customer.setProvince(lookup.getProvince());
         
         return customerRepository.save(customer);
-	}
+    }
 	
 	public Customer findCustomerById(Long id) {
         return customerRepository.findById(id)

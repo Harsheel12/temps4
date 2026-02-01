@@ -35,17 +35,10 @@ public class CustomerController {
 	
 	@PostMapping
     public ResponseEntity<Customer> createCustomer(
-            @Valid @RequestBody Customer customer) {
-        Customer savedCustomer = customerService.createCustomer(customer);
+            @Valid @RequestBody CreateCustomerRequest request) {
+        Customer savedCustomer = customerService.createCustomer(request);
         return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
     }
-	
-	@PostMapping("/code")
-    public ResponseEntity<Customer> createCustomerWithPostalCode(
-            @Valid @RequestBody CreateCustomerRequest request) {
-        Customer savedCustomer = customerService.createCustomerWithPostalCode(request);
-        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
-	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
