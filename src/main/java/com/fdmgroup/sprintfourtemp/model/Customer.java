@@ -1,13 +1,11 @@
 package com.fdmgroup.sprintfourtemp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.*;
-import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "customers")
@@ -29,6 +27,9 @@ public abstract class Customer {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "fk_address_id", referencedColumnName = "addressId")
 	private Address address;
+    
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<Account> accounts = new ArrayList<>();
 	
 	public Customer() {
 		
@@ -61,6 +62,26 @@ public abstract class Customer {
     
     public void setAddress(Address address) {
         this.address = address;
+    }
+    
+    public List<Account> getAccounts() {
+        return accounts;
+    }
+    
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
+    }
+    
+    // Helper method to add an account
+    public void addAccount(Account account) {
+        accounts.add(account);
+        account.setCustomer(this);
+    }
+    
+    // Helper method to remove an account
+    public void removeAccount(Account account) {
+        accounts.remove(account);
+        account.setCustomer(null);
     }
     
     public abstract String getCustomerType();
