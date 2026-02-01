@@ -14,9 +14,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fdmgroup.sprintfourtemp.dto.CreateCustomerRequest;
 import com.fdmgroup.sprintfourtemp.dto.UpdateAddressRequest;
 import com.fdmgroup.sprintfourtemp.dto.UpdateNameRequest;
 import com.fdmgroup.sprintfourtemp.model.Customer;
+import com.fdmgroup.sprintfourtemp.model.PostalCodeLookup;
 import com.fdmgroup.sprintfourtemp.service.CustomerService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -37,6 +39,13 @@ public class CustomerController {
         Customer savedCustomer = customerService.createCustomer(customer);
         return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
     }
+	
+	@PostMapping("/code")
+    public ResponseEntity<Customer> createCustomerWithPostalCode(
+            @Valid @RequestBody CreateCustomerRequest request) {
+        Customer savedCustomer = customerService.createCustomerWithPostalCode(request);
+        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+	}
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
@@ -70,6 +79,12 @@ public class CustomerController {
 	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
 		customerService.deleteCustomer(id);
         return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/postal-codes")
+	public ResponseEntity<List<PostalCodeLookup>> getAllPostalCodeLookups() {
+	    List<PostalCodeLookup> lookups = customerService.getAllPostalCodeLookups();
+	    return ResponseEntity.ok(lookups);
 	}
 
 }

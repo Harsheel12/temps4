@@ -55,6 +55,23 @@ public class GlobalExceptionHandler {
     }
     
     /**
+     * Handle InvalidPostalCodeException
+     */
+    @ExceptionHandler(InvalidPostalCodeException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidPostalCodeException(
+            InvalidPostalCodeException ex, WebRequest request) {
+        
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.BAD_REQUEST.value(),
+            "Invalid Postal Code",
+            ex.getMessage(),
+            request.getDescription(false).replace("uri=", "")
+        );
+        
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
+    
+    /**
      * Handle all other exceptions
      */
     @ExceptionHandler(Exception.class)
