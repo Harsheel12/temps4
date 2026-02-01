@@ -12,6 +12,7 @@ import com.fdmgroup.sprintfourtemp.dto.UpdateAddressRequest;
 import com.fdmgroup.sprintfourtemp.dto.UpdateNameRequest;
 import com.fdmgroup.sprintfourtemp.exception.CustomerNotFoundException;
 import com.fdmgroup.sprintfourtemp.exception.InvalidPostalCodeException;
+import com.fdmgroup.sprintfourtemp.model.Address;
 import com.fdmgroup.sprintfourtemp.model.Customer;
 import com.fdmgroup.sprintfourtemp.model.PostalCodeLookup;
 
@@ -34,13 +35,18 @@ public class CustomerService {
                 .findByPostalCodePrefix(postalCodePrefix)
                 .orElseThrow(() -> new InvalidPostalCodeException(request.getPostalCode()));
         
-        // Create customer with looked up values
+        // Create address with looked up values
+        Address address = new Address(
+            request.getStreetNumber(),
+            request.getPostalCode(),
+            lookup.getCity(),
+            lookup.getProvince()
+        );
+        
+        // Create customer with address
         Customer customer = new Customer();
         customer.setName(request.getName());
-        customer.setStreetNumber(request.getStreetNumber());
-        customer.setPostalCode(request.getPostalCode());
-        customer.setCity(lookup.getCity());
-        customer.setProvince(lookup.getProvince());
+        customer.setAddress(address);
         
         return customerRepository.save(customer);
     }
@@ -66,9 +72,17 @@ public class CustomerService {
         Customer customer = customerRepository.findById(id)
                 .orElseThrow(() -> new CustomerNotFoundException(id));
         
-        customer.setPostalCode(request.getPostalCode());
-        customer.setCity(request.getCity());
-        customer.setProvince(request.getProvince());
+        // Update the address fields
+        Address address = customer.getAddress();
+        if (address == null) {
+            address = new Address();
+            customer.setAddress(address);
+        }
+        
+        address.setPostalCode(request.getPostalCode());
+        address.setCity(request.getCity());
+        address.setProvince(request.getProvince());
+        
         return customerRepository.save(customer);
     }
 	

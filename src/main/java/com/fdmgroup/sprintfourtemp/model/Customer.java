@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,29 +22,18 @@ public class Customer {
 	@NotBlank(message = "Name is required and cannot be blank")
 	private String name;
 	
-	@NotBlank(message = "Street number is required and cannot be blank")
-	private String streetNumber;
-	
-	@NotBlank(message = "City is required and cannot be blank")
-	private String city;
-	
-	@NotBlank(message = "Province is required and cannot be blank")
-	private String province;
-	
-	@NotBlank(message = "Postal code is required and cannot be blank")
-	private String postalCode;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "address_id", referencedColumnName = "addressId")
+	private Address address;
 	
 	public Customer() {
 		
 	}
 	
-	public Customer(String name, String streetNumber, String city, String province, String postalCode) {
-		this.name = name;
-		this.streetNumber = streetNumber;
-		this.city = city;
-		this.province = province;
-		this.postalCode = postalCode;
-	}
+    public Customer(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
 	
 	public long getCustomerId() {
 		return customerId;
@@ -60,36 +50,12 @@ public class Customer {
 	public void setName(String name) {
 		this.name = name;
 	}
-
-	public String getStreetNumber() {
-		return streetNumber;
-	}
-
-	public void setStreetNumber(String streetNumber) {
-		this.streetNumber = streetNumber;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-	public String getProvince() {
-		return province;
-	}
-
-	public void setProvince(String province) {
-		this.province = province;
-	}
-
-	public String getPostalCode() {
-		return postalCode;
-	}
-
-	public void setPostalCode(String postalCode) {
-		this.postalCode = postalCode;
-	}
+	
+    public Address getAddress() {
+        return address;
+    }
+    
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 }
