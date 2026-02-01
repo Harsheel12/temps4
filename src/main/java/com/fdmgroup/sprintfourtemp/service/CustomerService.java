@@ -6,42 +6,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.fdmgroup.sprintfourtemp.dal.CustomerRepository;
+import com.fdmgroup.sprintfourtemp.dto.UpdateAddressRequest;
+import com.fdmgroup.sprintfourtemp.dto.UpdateNameRequest;
+import com.fdmgroup.sprintfourtemp.exception.CustomerNotFoundException;
 import com.fdmgroup.sprintfourtemp.model.Customer;
 
 @Service
 public class CustomerService {
-
-	private CustomerRepository customerRepo;
-
+	
 	@Autowired
-	public CustomerService(CustomerRepository customerRepo) {
-		super();
-		this.customerRepo = customerRepo;
-	}
-
-	public List<Customer> getCustomers() {
-		return customerRepo.findAll();
-	}
-
-	public void createCustomer(Customer customer) {
-		Customer newCustomer = new Customer(
-				customer.getName(), 
-				customer.getStreetNumber(), 
-				customer.getCity(),
-				customer.getProvince(),
-				customer.getPostalCode() 
-				);
-
-		customerRepo.save(newCustomer);
-	}
+	private CustomerRepository customerRepository;
 	
-	public Customer findById(int id) {
-		return customerRepo.findById(id)
-				.orElseThrow(()->new RuntimeException("Customer can't be found"));
-	}
+	public Customer createCustomer(Customer customer) {
+        return customerRepository.save(customer);
+    }
 	
-	public void deleteById(int id) {
-		customerRepo.deleteById(id);
-	}
+	public Customer findCustomerById(Long id) {
+        return customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException(id));
+    }
+	
+	public List<Customer> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+	
+	public Customer updateCustomerName(Long id, UpdateNameRequest request) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException(id));
+        
+        customer.setName(request.getName());
+        return customerRepository.save(customer);
+    }
+	
+	public Customer updateCustomerAddress(Long id, UpdateAddressRequest request) {
+        Customer customer = customerRepository.findById(id)
+                .orElseThrow(() -> new CustomerNotFoundException(id));
+        
+        customer.setPostalCode(request.getPostalCode());
+        customer.setCity(request.getCity());
+        customer.setProvince(request.getProvince());
+        return customerRepository.save(customer);
+    }
+	
+	public void deleteCustomer(Long id) {
+        if (!customerRepository.existsById(id)) {
+            throw new CustomerNotFoundException(id);
+        }
+        customerRepository.deleteById(id);
+    }
 
 }

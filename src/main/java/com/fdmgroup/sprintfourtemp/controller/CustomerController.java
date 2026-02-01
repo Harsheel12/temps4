@@ -3,6 +3,8 @@ package com.fdmgroup.sprintfourtemp.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,36 +16,42 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fdmgroup.sprintfourtemp.model.Customer;
 import com.fdmgroup.sprintfourtemp.service.CustomerService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/api/customers")
+@Tag(name = "Customer Management", description = "APIs for managing bank customers")
 public class CustomerController {
 	
+	@Autowired
 	private CustomerService customerService;
 	
-	@Autowired
-	public CustomerController(CustomerService customerService) {
-		this.customerService = customerService;
+	@PostMapping
+    public ResponseEntity<Customer> createCustomer(
+            @Valid @RequestBody Customer customer) {
+        Customer savedCustomer = customerService.createCustomer(customer);
+        return new ResponseEntity<>(savedCustomer, HttpStatus.CREATED);
+    }
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<Customer> getCustomerById(@PathVariable Long id) {
+		Customer customer = customerService.findCustomerById(id);
+        return ResponseEntity.ok(customer);
 	}
 	
 	@GetMapping
-	public List<Customer> getAllCustomers() {
-		return customerService.getCustomers();
-	}
+	public ResponseEntity<List<Customer>> getAllCustomers() {
+        List<Customer> customers = customerService.getAllCustomers();
+        return ResponseEntity.ok(customers);
+    }
 	
-	@GetMapping("/{customerId}")
-	public Customer getCustomerById(@PathVariable int customerId) {
-		return customerService.findById(customerId);
-	}
 	
-	@PostMapping
-	public void createCustomer(@RequestBody Customer customer) {
-		this.customerService.createCustomer(customer);
-	}
-	
-	@DeleteMapping ("/{customerId}")
-	public void deleteUserById(@PathVariable int customerId) {
-		customerService.deleteById(customerId);
+	@DeleteMapping ("/{id}")
+	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
+		customerService.deleteCustomer(id);
+        return ResponseEntity.noContent().build();
 	}
 
 }
