@@ -7,12 +7,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fdmgroup.sprintfourtemp.dto.UpdateAddressRequest;
+import com.fdmgroup.sprintfourtemp.dto.UpdateNameRequest;
 import com.fdmgroup.sprintfourtemp.model.Customer;
 import com.fdmgroup.sprintfourtemp.service.CustomerService;
 
@@ -47,6 +50,21 @@ public class CustomerController {
         return ResponseEntity.ok(customers);
     }
 	
+	@PatchMapping("/{id}/name")
+	public ResponseEntity<Customer> updateCustomerName(
+			@PathVariable Long id,
+            @Valid @RequestBody UpdateNameRequest request) {
+		Customer updatedCustomer = customerService.updateCustomerName(id, request);
+        return ResponseEntity.ok(updatedCustomer);
+	}
+	
+	@PatchMapping("/{id}/address")
+	public ResponseEntity<Customer> updateCustomerAddress(
+			@PathVariable Long id,
+            @Valid @RequestBody UpdateAddressRequest request) {
+		Customer updatedCustomer = customerService.updateCustomerAddress(id, request);
+        return ResponseEntity.ok(updatedCustomer);
+	}
 	
 	@DeleteMapping ("/{id}")
 	public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {

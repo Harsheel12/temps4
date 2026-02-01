@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 public class UpdateNameRequest {
 	
 	@NotBlank(message = "Name cannot be blank")
-    @Schema(description = "New name for the customer", example = "John Michael Doe")
     private String name;
     
     public UpdateNameRequest() {

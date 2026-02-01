@@ -6,15 +6,12 @@ import io.swagger.v3.oas.annotations.media.Schema;
 @Schema(description = "Request object for updating customer address")
 public class UpdateAddressRequest {
 	
-	@Schema(description = "New postal code for the customer", example = "M4B 1B3")
     private String postalCode;
     
     @NotBlank(message = "City cannot be blank")
-    @Schema(description = "New city for the customer", example = "Mississauga")
     private String city;
     
     @NotBlank(message = "Province cannot be blank")
-    @Schema(description = "New province for the customer", example = "Ontario")
     private String province;
     
     public UpdateAddressRequest() {
