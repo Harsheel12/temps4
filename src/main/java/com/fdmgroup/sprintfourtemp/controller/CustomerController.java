@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fdmgroup.sprintfourtemp.dto.CreateCustomerRequest;
 import com.fdmgroup.sprintfourtemp.dto.UpdateAddressRequest;
 import com.fdmgroup.sprintfourtemp.dto.UpdateNameRequest;
+import com.fdmgroup.sprintfourtemp.model.Company;
 import com.fdmgroup.sprintfourtemp.model.Customer;
+import com.fdmgroup.sprintfourtemp.model.Person;
 import com.fdmgroup.sprintfourtemp.model.PostalCodeLookup;
 import com.fdmgroup.sprintfourtemp.service.CustomerService;
 
@@ -79,5 +81,16 @@ public class CustomerController {
 	    List<PostalCodeLookup> lookups = customerService.getAllPostalCodeLookups();
 	    return ResponseEntity.ok(lookups);
 	}
-
+	
+	@GetMapping("/persons")
+	public ResponseEntity<List<Person>> getAllPersons() {
+	    List<Person> persons = customerService.getAllPersons();
+	    return ResponseEntity.ok(persons);
+	}
+	
+	@GetMapping("/companies")
+	public ResponseEntity<List<Company>> getAllCompanies() {
+	    List<Company> companies = customerService.getAllCompanies();
+	    return ResponseEntity.ok(companies);
+	}
 }

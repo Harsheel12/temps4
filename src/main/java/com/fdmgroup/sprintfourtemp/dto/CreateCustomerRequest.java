@@ -15,13 +15,18 @@ public class CreateCustomerRequest {
     @NotBlank(message = "Postal code is required and cannot be blank")
     private String postalCode;
     
+    @NotBlank(message = "Customer type is required and cannot be blank")
+    @Schema(description = "Type of customer - either PERSON or COMPANY", allowableValues = {"PERSON", "COMPANY"})
+    private String customerType;
+    
     public CreateCustomerRequest() {
     }
     
-    public CreateCustomerRequest(String name, String streetNumber, String postalCode) {
+    public CreateCustomerRequest(String name, String streetNumber, String postalCode, String customerType) {
         this.name = name;
         this.streetNumber = streetNumber;
         this.postalCode = postalCode;
+        this.customerType = customerType;
     }
     
     public String getName() {
@@ -46,5 +51,13 @@ public class CreateCustomerRequest {
     
     public void setPostalCode(String postalCode) {
         this.postalCode = postalCode;
+    }
+    
+    public String getCustomerType() {
+        return customerType;
+    }
+    
+    public void setCustomerType(String customerType) {
+        this.customerType = customerType;
     }
 }

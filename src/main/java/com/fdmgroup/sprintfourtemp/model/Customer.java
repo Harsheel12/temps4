@@ -11,19 +11,23 @@ import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
 @Table(name = "customers")
-@Schema(description = "Customer entity representing a bank customer")
-public class Customer {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "customer_type", discriminatorType = DiscriminatorType.STRING)
+@Schema(description = "Abstract customer entity. Can be either a Person or Company")
+public abstract class Customer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "customer_id")
 	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private long customerId;
 	
 	@NotBlank(message = "Name is required and cannot be blank")
+	@Column(name = "customer_name")
 	private String name;
 	
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "address_id", referencedColumnName = "addressId")
+    @JoinColumn(name = "fk_address_id", referencedColumnName = "addressId")
 	private Address address;
 	
 	public Customer() {
@@ -58,4 +62,6 @@ public class Customer {
     public void setAddress(Address address) {
         this.address = address;
     }
+    
+    public abstract String getCustomerType();
 }
