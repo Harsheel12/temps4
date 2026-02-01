@@ -89,4 +89,8 @@ public class AccountService {
         customer.removeAccount(account);
         accountRepository.delete(account);
     }
+    
+    public List<Account> getAccountsByCity(String city) {
+        return accountRepository.findByCustomerAddressCity(city);
+    }
 }

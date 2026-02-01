@@ -73,4 +73,12 @@ public class AccountController {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @GetMapping("/city/{city}")
+    public ResponseEntity<List<Account>> getAccountsByCity(
+            @Parameter(description = "Name of the city", required = true, example = "Toronto")
+            @PathVariable String city) {
+        List<Account> accounts = accountService.getAccountsByCity(city);
+        return ResponseEntity.ok(accounts);
+    }
 }
