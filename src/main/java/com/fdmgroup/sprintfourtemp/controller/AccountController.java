@@ -1,11 +1,5 @@
 package com.fdmgroup.sprintfourtemp.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +39,7 @@ public class AccountController {
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity<Account> getAccountById(
-            @Parameter(description = "ID of the account to retrieve", required = true)
-            @PathVariable Long id) {
+    public ResponseEntity<Account> getAccountById(@PathVariable Long id) {
         Account account = accountService.getAccountById(id);
         return ResponseEntity.ok(account);
     }
@@ -59,25 +51,19 @@ public class AccountController {
     }
     
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<List<Account>> getAccountsByCustomerId(
-            @Parameter(description = "ID of the customer", required = true)
-            @PathVariable Long customerId) {
+    public ResponseEntity<List<Account>> getAccountsByCustomerId(@PathVariable Long customerId) {
         List<Account> accounts = accountService.getAccountsByCustomerId(customerId);
         return ResponseEntity.ok(accounts);
     }
     
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(
-            @Parameter(description = "ID of the account to delete", required = true)
-            @PathVariable Long id) {
+    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }
     
     @GetMapping("/city/{city}")
-    public ResponseEntity<List<Account>> getAccountsByCity(
-            @Parameter(description = "Name of the city", required = true, example = "Toronto")
-            @PathVariable String city) {
+    public ResponseEntity<List<Account>> getAccountsByCity(@PathVariable String city) {
         List<Account> accounts = accountService.getAccountsByCity(city);
         return ResponseEntity.ok(accounts);
     }
