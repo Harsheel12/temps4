@@ -15,9 +15,6 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("Customer Management API")
                         .version("1.0")
-                        .description("RESTful API for managing bank customers with full CRUD operations")
-                        .contact(new Contact()
-                                .name("Bank Teller System")
-                                .email("support@bank.com")));
+                        .description("RESTful API for managing bank customers with full CRUD operations"));
     }
 }
