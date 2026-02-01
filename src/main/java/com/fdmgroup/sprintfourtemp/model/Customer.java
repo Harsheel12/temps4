@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @Entity
@@ -14,12 +15,22 @@ public class Customer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Schema(description = "Unique identifier of the customer", example = "1", accessMode = Schema.AccessMode.READ_ONLY)
+	@Schema(accessMode = Schema.AccessMode.READ_ONLY)
 	private long customerId;
+	
+	@NotBlank(message = "Name is required and cannot be blank")
 	private String name;
+	
+	@NotBlank(message = "Street number is required and cannot be blank")
 	private String streetNumber;
+	
+	@NotBlank(message = "City is required and cannot be blank")
 	private String city;
+	
+	@NotBlank(message = "Province is required and cannot be blank")
 	private String province;
+	
+	@NotBlank(message = "Postal code is required and cannot be blank")
 	private String postalCode;
 	
 	public Customer() {
